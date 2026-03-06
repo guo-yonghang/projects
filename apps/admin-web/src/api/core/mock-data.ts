@@ -54,19 +54,20 @@ export const mockMenus = [
   {
     component: 'BasicLayout',
     meta: {
-      icon: 'lucide:table',
+      icon: 'lucide:settings',
       order: 2000,
-      title: 'Vxe表格',
+      title: '系统设置',
     },
-    name: 'VxeTable',
-    path: '/vxe-table',
+    name: 'System',
+    path: '/system',
     children: [
       {
-        name: 'VxeTableForm',
-        path: '/vxe-table/form',
-        component: '/demos/vxe-table/form',
+        name: 'SystemMenu',
+        path: '/system/menu',
+        component: '/system/menu/index',
         meta: {
-          title: '搜索表格',
+          icon: 'lucide:menu',
+          title: '菜单管理',
         },
       },
     ],

@@ -1,9 +1,26 @@
 import { requestClient } from '#/api/request';
-import type { CommonLoginParams, LoginResult } from './types';
 
 export * from './core';
 export * from './shop';
-export * from './types';
+
+interface CommonLoginParams {
+  userName?: string;
+  pwd?: string;
+}
+
+interface LoginResult {
+  access_token: string;
+  user_id: number;
+  name: string;
+  admin_user_role_id?: string[];
+  source_type: number;
+  expires_in: number;
+}
+
+// interface MenuPermResult {
+//   [key: string]: any;
+// }
+
 
 // 登录
 export function commonLoginApi(params: CommonLoginParams) {

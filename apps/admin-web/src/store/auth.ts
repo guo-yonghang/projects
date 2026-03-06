@@ -10,7 +10,7 @@ import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { ElNotification } from 'element-plus';
 import { defineStore } from 'pinia';
 
-import { commonLoginApi, getAccessCodesApi, getMenuPerApi, getUserInfoApi, logoutApi, type LoginResult } from '#/api';
+import { commonLoginApi, getMenuPerApi, logoutApi } from '#/api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -54,35 +54,19 @@ export const useAuthStore = defineStore('auth', () => {
         });
 
       console.log('登录结果', loginRes);
-
+      // 如果未获取到 token，视为登录失败，直接返回
       if (!loginRes.access_token) {
         return { userInfo: null };
       }
 
+      // 存储 Access Token
       accessStore.setAccessToken(loginRes.access_token);
 
       const menuRes = await getMenuPerApi()
 
       console.log('菜单列表', menuRes);
 
-      //   // 如果未获取到 token，视为登录失败，直接返回
-      //   if (!access_token) {
-      //     return { userInfo: null };
-      //   }
-
-      //   // 2. 存储 Access Token
-      //   accessStore.setAccessToken(access_token);
-
-      //   // 3. 并行获取用户信息和权限码
-      //   // fetchUserInfo: 获取详细的用户信息
-      //   // getAccessCodesApi: 获取用户的权限码列表
-      //   const [fetchUserInfoResult, accessCodes] = await Promise.all([
-      //     fetchUserInfo(),
-      //     getAccessCodesApi(),
-      //   ]);
-
-      //   // 4. 组装最终的用户信息对象
-      //   // 将登录返回的基础信息与获取到的详细信息合并
+      // 组装最终的用户信息对象
       userInfo = {
         desc: loginRes.name,
         homePath: preferences.app.defaultHomePath,
@@ -94,9 +78,28 @@ export const useAuthStore = defineStore('auth', () => {
         roles: loginRes.admin_user_role_id, // 假设角色是数组格式
       };
 
-      //   // 5. 更新 Store 中的状态
-      //   // 更新用户信息
+      // 更新用户信息
       userStore.setUserInfo({ ...userInfo, userId: String(userInfo.userId) });
+
+
+      // 处理登录过期状态 expires_in为登录有效时间单位为分钟
+      // 如果 expires_in 存在且大于 0，则设置登录过期状态为 true
+      if (loginRes.expires_in) {
+        accessStore.setLoginExpired(true);
+        onSuccess ? await onSuccess?.() : await router.push(preferences.app.defaultHomePath);
+      } else {
+        accessStore.setLoginExpired(false);
+      }
+
+      // 显示登录成功通知
+      if (userInfo.realName) {
+        ElNotification({
+          message: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
+          title: $t('authentication.loginSuccess'),
+          type: 'success',
+        });
+      }
+
       //   // 更新权限码
       //   accessStore.setAccessCodes(accessCodes);
 
@@ -113,17 +116,7 @@ export const useAuthStore = defineStore('auth', () => {
       //           userInfo.homePath || preferences.app.defaultHomePath,
       //         );
       //   }
-
-      //   // 8. 显示登录成功通知
-      //   if (userInfo?.realName) {
-      //     ElNotification({
-      //       message: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
-      //       title: $t('authentication.loginSuccess'),
-      //       type: 'success',
-      //     });
-      //   }
     } finally {
-      // 无论成功与否，最后都将加载状态设置为 false
       loginLoading.value = false;
     }
 
@@ -154,10 +147,10 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchUserInfo() {
-    let userInfo: null | UserInfo = null;
-    userInfo = await getUserInfoApi();
-    userStore.setUserInfo({ ...userInfo, userId: String(userInfo?.userId) });
-    return userInfo;
+    // let userInfo: null | UserInfo = null;
+    // userInfo = await getUserInfoApi();
+    // userStore.setUserInfo({ ...userInfo, userId: String(userInfo?.userId) });
+    // return userInfo;
   }
 
   function $reset() {
@@ -167,7 +160,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     $reset,
     authLogin,
-    fetchUserInfo,
+    // fetchUserInfo,
     loginLoading,
     logout,
   };
