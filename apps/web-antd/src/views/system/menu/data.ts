@@ -75,8 +75,7 @@ export const gridOptions: VxeGridProps<any> = {
             data = Array.isArray(res) ? res : [];
           }
           return data;
-        } catch (error) {
-          console.error(error);
+        } catch {
           return [];
         }
       },
