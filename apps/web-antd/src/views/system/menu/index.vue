@@ -1,17 +1,21 @@
 <script lang="ts" setup>
 import { h } from 'vue';
+
+import { Page, useVbenDrawer } from '@vben/common-ui';
+import { IconifyIcon } from '@vben/icons';
+
 import {
   DeleteOutlined,
   EditOutlined,
   PlusOutlined,
 } from '@ant-design/icons-vue';
-import { Page, useVbenDrawer } from '@vben/common-ui';
-import { IconifyIcon } from '@vben/icons';
-import { Button, Tag, Modal, message } from 'ant-design-vue';
+import { Button, message, Modal, Tag } from 'ant-design-vue';
+
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { delMenuApi } from '#/api/system/menu';
+
 import { formOptions, gridOptions } from './data';
 import MenuDrawer from './menu-drawer.vue';
-import { delMenuApi } from '#/api/system/menu';
 
 const [Drawer, drawerApi] = useVbenDrawer({
   connectedComponent: MenuDrawer,
@@ -67,10 +71,10 @@ function handleSuccess() {
           新增
         </Button>
       </template>
-      <template #iconName="{ row }">
+      <template #iconName>
         <div class="flex-center">
           <!-- <IconifyIcon :icon="row.iconName" class="size-5" /> -->
-          <IconifyIcon icon="lucide:menu" class="size-5" />
+          <IconifyIcon icon="lucide:infinity" class="size-5" />
           <!-- <IconifyIcon icon="ant-design:account-book-twotone" class="size-5" /> -->
         </div>
       </template>
@@ -85,23 +89,26 @@ function handleSuccess() {
           type="link"
           size="small"
           @click="handleEdit(row)"
-          >修改</Button
         >
+          修改
+        </Button>
         <Button
           :icon="h(PlusOutlined)"
           type="link"
           size="small"
           @click="handleAddChild(row)"
-          >新增</Button
         >
+          新增
+        </Button>
         <Button
           :icon="h(DeleteOutlined)"
           danger
           type="link"
           size="small"
           @click="handleDelete(row)"
-          >删除</Button
         >
+          删除
+        </Button>
       </template>
     </Grid>
     <Drawer @success="handleSuccess" />

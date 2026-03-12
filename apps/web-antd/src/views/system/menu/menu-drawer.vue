@@ -1,9 +1,12 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
+
 import { useVbenDrawer } from '@vben/common-ui';
-import { useVbenForm, z } from '#/adapter/form';
-import { addMenuApi, updateMenuApi } from '#/api/system/menu';
+
 import { message } from 'ant-design-vue';
+
+import { useVbenForm } from '#/adapter/form';
+import { addMenuApi, updateMenuApi } from '#/api/system/menu';
 
 const emit = defineEmits(['success']);
 
@@ -135,9 +138,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onConfirm: async () => {
     const { valid, values } = await formApi.validate();
     if (!valid) return;
-
-    console.log(values);
-    return;
     try {
       drawerApi.setState({ confirmLoading: true });
       if (isEdit.value) {
@@ -149,8 +149,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
       }
       drawerApi.close();
       emit('success');
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // 请求异常不做处理
     } finally {
       drawerApi.setState({ confirmLoading: false });
     }

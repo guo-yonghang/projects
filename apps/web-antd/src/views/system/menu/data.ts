@@ -1,5 +1,6 @@
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
+
 import { getAllMenuApi } from '#/api/system/menu';
 
 export const formOptions: VbenFormProps = {

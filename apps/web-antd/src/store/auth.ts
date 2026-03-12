@@ -30,7 +30,7 @@ export const useAuthStore = defineStore('auth', () => {
     onSuccess?: () => Promise<void> | void,
   ) {
     // 异步处理用户登录操作并获取 accessToken
-    let userInfo: null | UserInfo = null;
+    let userInfo: null | UserInfo;
     try {
       loginLoading.value = true;
       const loginRes = await userLoginApi(params);
@@ -84,7 +84,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     return {
-      userInfo,
+      userInfo: userInfo ?? null,
     };
   }
 

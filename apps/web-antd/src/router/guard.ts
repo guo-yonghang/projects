@@ -64,7 +64,6 @@ function setupAccessGuard(router: Router) {
 
     // accessToken 检查
     if (!accessStore.accessToken) {
-      
       // 明确声明忽略权限访问权限，则可以访问
       if (to.meta.ignoreAccess) {
         return true;
@@ -95,8 +94,6 @@ function setupAccessGuard(router: Router) {
     // 当前登录用户拥有的角色标识列表
     const userInfo = userStore.userInfo || (await authStore.fetchUserInfo());
     if (!userInfo) {
-      console.log('没有信息');
-      
       // 如果获取不到用户信息，需要重新登录
       accessStore.setAccessToken(null);
       return {
