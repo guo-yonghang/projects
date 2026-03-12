@@ -1,10 +1,40 @@
 {
-  "name": "projects",
-  "version": "1.0.0",
+  "name": "vben-admin-monorepo",
+  "version": "5.6.0",
   "private": true,
+  "keywords": [
+    "monorepo",
+    "turbo",
+    "vben",
+    "vben admin",
+    "vben pro",
+    "vue",
+    "vue admin",
+    "vue vben admin",
+    "vue vben admin pro",
+    "vue3"
+  ],
+  "homepage": "https://github.com/vbenjs/vue-vben-admin",
+  "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
+  "repository": "vbenjs/vue-vben-admin.git",
+  "license": "MIT",
+  "author": {
+    "name": "vben",
+    "email": "ann.vben@gmail.com",
+    "url": "https://github.com/anncwb"
+  },
+  "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 turbo build",
-    "build:admin": "pnpm run build --filter=@vben/admin-web",
+    "build:analyze": "turbo build:analyze",
+    "build:antd": "pnpm run build --filter=@vben/web-antd",
+    "build:docker": "./scripts/deploy/build-local-docker-image.sh",
+    "build:docs": "pnpm run build --filter=@vben/docs",
+    "build:ele": "pnpm run build --filter=@vben/web-ele",
+    "build:naive": "pnpm run build --filter=@vben/web-naive",
+    "build:tdesign": "pnpm run build --filter=@vben/web-tdesign",
+    "build:play": "pnpm run build --filter=@vben/playground",
+    "changeset": "pnpm exec changeset",
     "check": "pnpm run check:circular && pnpm run check:dep && pnpm run check:type && pnpm check:cspell",
     "check:circular": "vsh check-circular",
     "check:cspell": "cspell lint **/*.ts **/README.md .changeset/*.md --no-progress",
@@ -13,7 +43,13 @@
     "clean": "node ./scripts/clean.mjs",
     "commit": "czg",
     "dev": "turbo-run dev",
-    "dev:admin": "pnpm -F @vben/admin-web run dev",
+    "dev:antd": "pnpm -F @vben/web-antd run dev",
+    "dev:antdv-next": "pnpm -F @vben/web-antdv-next run dev",
+    "dev:docs": "pnpm -F @vben/docs run dev",
+    "dev:ele": "pnpm -F @vben/web-ele run dev",
+    "dev:naive": "pnpm -F @vben/web-naive run dev",
+    "dev:tdesign": "pnpm -F @vben/web-tdesign run dev",
+    "dev:play": "pnpm -F @vben/playground run dev",
     "format": "vsh lint --format",
     "lint": "vsh lint",
     "postinstall": "pnpm -r run stub --if-present",
@@ -22,7 +58,9 @@
     "publint": "vsh publint",
     "reinstall": "pnpm clean --del-lock && pnpm install",
     "test:unit": "vitest run --dom",
+    "test:e2e": "turbo run test:e2e",
     "update:deps": "npx taze -r -w",
+    "version": "pnpm exec changeset version && pnpm install --no-frozen-lockfile",
     "catalog": "pnpx codemod pnpm/catalog"
   },
   "devDependencies": {
@@ -34,7 +72,6 @@
     "@vben/eslint-config": "workspace:*",
     "@vben/prettier-config": "workspace:*",
     "@vben/stylelint-config": "workspace:*",
-    "@vben/tailwind-config": "workspace:*",
     "@vben/tsconfig": "workspace:*",
     "@vben/turbo-run": "workspace:*",
     "@vben/vite-config": "workspace:*",
@@ -42,7 +79,6 @@
     "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "@vue/test-utils": "catalog:",
-    "autoprefixer": "catalog:",
     "cross-env": "catalog:",
     "cspell": "catalog:",
     "happy-dom": "catalog:",
@@ -63,14 +99,5 @@
     "node": ">=20.19.0",
     "pnpm": ">=10.0.0"
   },
-  "packageManager": "pnpm@10.28.2",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "esbuild",
-      "lefthook",
-      "unrs-resolver",
-      "vue-demi"
-    ]
-  }
+  "packageManager": "pnpm@10.30.3"
 }

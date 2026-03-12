@@ -74,7 +74,7 @@ export const authenticateResponseInterceptor = ({
       if (client.isRefreshing) {
         return new Promise((resolve) => {
           client.refreshTokenQueue.push((newToken: string) => {
-            config.headers.access_token = formatToken(newToken);
+            config.headers.Authorization = formatToken(newToken);
             resolve(client.request(config.url, { ...config }));
           });
         });
@@ -130,7 +130,7 @@ export const errorMessageResponseInterceptor = (
         return Promise.reject(error);
       }
 
-      let errorMessage = '';
+      let errorMessage: string;
       const status = error?.response?.status;
 
       switch (status) {

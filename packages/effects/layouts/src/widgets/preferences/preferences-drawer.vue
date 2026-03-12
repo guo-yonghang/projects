@@ -42,6 +42,7 @@ import {
   BuiltinTheme,
   ColorMode,
   Content,
+  Copyright,
   FontSize,
   Footer,
   General,
@@ -69,7 +70,9 @@ const appContentCompact = defineModel<ContentCompactType>('appContentCompact');
 const appWatermark = defineModel<boolean>('appWatermark');
 const appWatermarkContent = defineModel<string>('appWatermarkContent');
 const appEnableCheckUpdates = defineModel<boolean>('appEnableCheckUpdates');
-const appEnableCopyPreferences = defineModel<boolean>('appEnableCopyPreferences');
+const appEnableCopyPreferences = defineModel<boolean>(
+  'appEnableCopyPreferences',
+);
 const appEnableStickyPreferencesNavigationBar = defineModel<boolean>(
   'appEnableStickyPreferencesNavigationBar',
 );
@@ -141,6 +144,16 @@ const navigationAccordion = defineModel<boolean>('navigationAccordion');
 
 const footerEnable = defineModel<boolean>('footerEnable');
 const footerFixed = defineModel<boolean>('footerFixed');
+
+const copyrightSettingShow = defineModel<boolean>('copyrightSettingShow');
+const copyrightEnable = defineModel<boolean>('copyrightEnable');
+const copyrightCompanyName = defineModel<string>('copyrightCompanyName');
+const copyrightCompanySiteLink = defineModel<string>(
+  'copyrightCompanySiteLink',
+);
+const copyrightDate = defineModel<string>('copyrightDate');
+const copyrightIcp = defineModel<string>('copyrightIcp');
+const copyrightIcpLink = defineModel<string>('copyrightIcpLink');
 
 const shortcutKeysEnable = defineModel<boolean>('shortcutKeysEnable');
 const shortcutKeysGlobalSearch = defineModel<boolean>(
@@ -239,7 +252,7 @@ async function handleReset() {
     <Drawer
       :description="$t('preferences.subtitle')"
       :title="$t('preferences.title')"
-      class="!border-0 sm:max-w-sm"
+      class="border-0! sm:max-w-sm"
     >
       <template #extra>
         <div class="flex items-center">
@@ -251,7 +264,7 @@ async function handleReset() {
           >
             <span
               v-if="diffPreference"
-              class="bg-primary absolute right-0.5 top-0.5 h-2 w-2 rounded"
+              class="absolute top-0.5 right-0.5 size-2 rounded-sm bg-primary"
             ></span>
             <RotateCw class="size-4" />
           </VbenIconButton>
@@ -425,6 +438,20 @@ async function handleReset() {
               <Footer
                 v-model:footer-enable="footerEnable"
                 v-model:footer-fixed="footerFixed"
+              />
+            </Block>
+            <Block
+              v-if="copyrightSettingShow"
+              :title="$t('preferences.copyright.title')"
+            >
+              <Copyright
+                v-model:copyright-company-name="copyrightCompanyName"
+                v-model:copyright-company-site-link="copyrightCompanySiteLink"
+                v-model:copyright-date="copyrightDate"
+                v-model:copyright-enable="copyrightEnable"
+                v-model:copyright-icp="copyrightIcp"
+                v-model:copyright-icp-link="copyrightIcpLink"
+                :disabled="!footerEnable"
               />
             </Block>
           </template>

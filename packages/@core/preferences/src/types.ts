@@ -53,10 +53,10 @@ interface AppPreferences {
   dynamicTitle: boolean;
   /** 是否开启检查更新 */
   enableCheckUpdates: boolean;
-  /** 是否显示偏好设置 */
-  enablePreferences: boolean;
   /** 是否显示复制偏好设置按钮 */
   enableCopyPreferences: boolean;
+  /** 是否显示偏好设置 */
+  enablePreferences: boolean;
   /**
    * @zh_CN 是否开启refreshToken
    */
@@ -92,18 +92,35 @@ interface AppPreferences {
 interface BreadcrumbPreferences {
   /** 面包屑是否启用 */
   enable: boolean;
-  /** 面包屑是否隐藏只有一个 */
+  /** 面包屑是否只有一个时隐藏 */
   hideOnlyOne: boolean;
-  /** 面包屑是否显示首页 */
+  /** 面包屑首页图标是否可见 */
   showHome: boolean;
-  /** 面包屑是否显示图标 */
+  /** 面包屑图标是否可见 */
   showIcon: boolean;
   /** 面包屑风格 */
   styleType: BreadcrumbStyleType;
 }
 
+interface CopyrightPreferences {
+  /** 版权公司名 */
+  companyName: string;
+  /** 版权公司名链接 */
+  companySiteLink: string;
+  /** 版权日期 */
+  date: string;
+  /** 版权是否可见 */
+  enable: boolean;
+  /** 备案号 */
+  icp: string;
+  /** 备案号链接 */
+  icpLink: string;
+  /** 设置面板是否显示*/
+  settingShow?: boolean;
+}
+
 interface FooterPreferences {
-  /** 底栏是否启用 */
+  /** 底栏是否可见 */
   enable: boolean;
   /** 底栏是否固定 */
   fixed: boolean;
@@ -281,6 +298,8 @@ interface Preferences {
   app: AppPreferences;
   /** 顶栏配置 */
   breadcrumb: BreadcrumbPreferences;
+  /** 版权配置 */
+  copyright: CopyrightPreferences;
   /** 底栏配置 */
   footer: FooterPreferences;
   /** 面包屑配置 */
@@ -311,12 +330,17 @@ interface InitialOptions {
 }
 export type {
   AppPreferences,
+  BreadcrumbPreferences,
+  FooterPreferences,
+  HeaderPreferences,
   InitialOptions,
   LogoPreferences,
   NavigationPreferences,
   Preferences,
   PreferencesKeys,
   ShortcutKeyPreferences,
+  SidebarPreferences,
+  SupportedLanguagesType,
   TabbarPreferences,
   ThemePreferences,
   TransitionPreferences,
